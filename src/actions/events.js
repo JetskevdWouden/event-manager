@@ -4,6 +4,7 @@ export const EVENTS_FETCHED = 'EVENTS_FETCHED';
 export const EVENT_CREATE_SUCCESS = 'EVENT_CREATE_SUCCES';
 export const EVENT_FETCHED = 'EVENT_FETCHED';
 export const DELETE_EVENT_SUCCESS = 'DELETE_EVENT_SUCCESS';
+export const UPDATE_EVENT_SUCCESS = 'UPDATE_EVENT_SUCCESS';
 
 const baseUrl = 'http://localhost:4000';
 
@@ -27,14 +28,17 @@ const deleteEventSuccess = (eventId) => ({
     eventId
 })
 
+const updateEventSuccess = (eventId, newData) => ({
+    type: UPDATE_EVENT_SUCCESS,
+    eventId,
+    newData
+})
+
 export const loadEvents = () => (dispatch, getState) => {
-    //check if state already contains event - to not fetch again
     if (getState().events)
         return
-    // a GET /events request
     request(`${baseUrl}/events`)
         .then(response => {
-            //dispatch an EVENTS_FETCHED action that contains the events
             dispatch(eventsFetched(response.body))
         })
         .catch(console.error)
@@ -51,23 +55,35 @@ export const createEvent = (data) => dispatch => {
 }
 
 export const loadEvent = (props) => (dispatch, getState) => {
-    //console.log("GETSTATE", getState().events)
-    const id = props
-    //console.log("WHERE IS MY ID??", props)
-    request(`${baseUrl}/events/${id}`)
+    const eventId = props
+    const reduxState = getState().event
+    if (reduxState && reduxState.id === eventId) return
+
+    request(`${baseUrl}/events/${eventId}`)
         .then(response => {
-            //console.log("THIS BODY RES", response.body)
             const event = response.body;
-            //console.log("EVENT SENT TO EVENTFETCHED", event)
             dispatch(eventFetched(event))
         })
         .catch(console.error)
 }
 
 export const deleteEvent = (props) => (dispatch, getState) => {
-    //console.log("WHAT ARE MY PROPS?", props)
-    //console.log("IS THIS MY ID?", props.id)
     const eventId = props
-    console.log("THIS IS THE STATE AT THE MO", getState())
-    dispatch(deleteEventSuccess(eventId))
+    request
+        .delete(`${baseUrl}/events/${eventId}`)
+        .then(response => {
+            dispatch(deleteEventSuccess(eventId))
+        })
+        .catch(console.error);
+}
+
+export const updateEvent = (eventId, data) => (dispatch, getState) => {
+    request
+        .patch(`${baseUrl}/events/${eventId}`)
+        .send(data)
+        .then(response => {
+            const newData = response.body
+            dispatch(updateEventSuccess(newData));
+        })
+        .catch(console.error)
 }

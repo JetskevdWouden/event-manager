@@ -7,7 +7,7 @@ export default function EventForm(props) {
 
     return (
         <div className="createForm">
-            <h1>Create an Event</h1>
+            <h3>Create an Event</h3>
             <form onSubmit={onSubmit}>
                 <label>
                     Enter Name of the Event:
@@ -30,7 +30,6 @@ export default function EventForm(props) {
                 </label>
                 <br/>
                 <br/>
-                {/* {console.log("VALUES", values)} */}
                 <input type="SUBMIT" value="SUBMIT"/>
             </form>
         </div>

@@ -4,11 +4,7 @@ import { createEvent } from '../actions/events';
 import EventForm from './EventForm';
 
 class CreateEventFormContainer extends React.Component {
-    state = {
-        name: '',
-        date: '',
-        description: ''
-    }
+    state = {}
 
     onChange = (event) => {
         this.setState({
@@ -18,12 +14,12 @@ class CreateEventFormContainer extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.createEvent(this.state)
         this.setState({
             name: '',
             date: '',
             description: ''
         })
+        this.props.createEvent(this.state)
     }
 
     render() {

@@ -14,13 +14,9 @@ export default (reduxState = initialState, action = {}) => {
                 action.event
             ]
         case DELETE_EVENT_SUCCESS:
-            //removes => filters event from events array aka initialState
-            //console.log("IM THE EVENTS STATE", reduxState)
-            //console.log("I WANT TO GO", action.eventId)
             return (
-                reduxState = reduxState.filter(event => {
+                reduxState.filter(event => {
                     if (event.id !== action.eventId) {
-                        //console.log("IM AN EVENT ID", event.id)
                         return true;
                     }
                 })
