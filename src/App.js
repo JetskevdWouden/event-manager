@@ -2,9 +2,11 @@ import React from 'react';
 import './App.css';
 import store from './store'
 import { Provider } from 'react-redux'
-import { Route } from 'react-router-dom'
-import EventsListContainer from './components/EventsListContainer';
-import EventDetailsContainer from './components/EventDetailsContainer';
+// import { Route } from 'react-router-dom'
+// import EventsListContainer from './components/EventsListContainer';
+// import EventDetailsContainer from './components/EventDetailsContainer';
+// import LoginFormContainer from './components/LoginFormContainer';
+import Routes from './components/Routes';
 
 class App extends React.Component {
   render() {
@@ -16,8 +18,10 @@ class App extends React.Component {
           </header>
           <main>
             <div>
-              <Route path="/" exact component={EventsListContainer} />
+              <Routes />
+              {/* <Route path="/" exact component={EventsListContainer} />
               <Route path="/events/:id" exact component={EventDetailsContainer} />
+              <Route path="/login" exact component={LoginFormContainer} /> */}
             </div>
           </main>
         </div>
