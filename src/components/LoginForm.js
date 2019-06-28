@@ -1,8 +1,7 @@
 import React from 'react'
 
 export default function LoginForm(props) {
-    console.log("WHAT ARE MY PROPS?", props)
-
+    //console.log("WHAT ARE MY PROPS?", props)
     return (
         <form onSubmit={props.onSubmit}>
             <br/>

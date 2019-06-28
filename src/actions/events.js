@@ -37,16 +37,21 @@ const updateEventSuccess = (eventId, newData) => ({
 export const loadEvents = () => (dispatch, getState) => {
     if (getState().events)
         return
+    const jwt = getState().currentUser
     request(`${baseUrl}/events`)
+        .set('Authorization', `Bearer ${jwt}`)
         .then(response => {
             dispatch(eventsFetched(response.body))
         })
         .catch(console.error)
 }
 
-export const createEvent = (data) => dispatch => {
+export const createEvent = (data) => (dispatch, getState) => {
+    const jwt = getState().currentUser
+
     request
         .post(`${baseUrl}/events`)
+        .set('Authorization', `Bearer ${jwt}`)
         .send(data)
         .then(response => {
             dispatch(eventCreateSuccess(response.body))
@@ -57,9 +62,12 @@ export const createEvent = (data) => dispatch => {
 export const loadEvent = (props) => (dispatch, getState) => {
     const eventId = props
     const reduxState = getState().event
+    const jwt = getState().currentUser
+
     if (reduxState && reduxState.id === eventId) return
 
     request(`${baseUrl}/events/${eventId}`)
+        .set('Authorization', `Bearer ${jwt}`)
         .then(response => {
             const event = response.body;
             dispatch(eventFetched(event))
@@ -69,8 +77,11 @@ export const loadEvent = (props) => (dispatch, getState) => {
 
 export const deleteEvent = (props) => (dispatch, getState) => {
     const eventId = props
+    const jwt = getState().currentUser
+
     request
         .delete(`${baseUrl}/events/${eventId}`)
+        .set('Authorization', `Bearer ${jwt}`)
         .then(response => {
             dispatch(deleteEventSuccess(eventId))
         })
@@ -78,8 +89,11 @@ export const deleteEvent = (props) => (dispatch, getState) => {
 }
 
 export const updateEvent = (eventId, data) => (dispatch, getState) => {
+    const jwt = getState().currentUser
+
     request
         .patch(`${baseUrl}/events/${eventId}`)
+        .set('Authorization', `Bearer ${jwt}`)
         .send(data)
         .then(response => {
             const newData = response.body
